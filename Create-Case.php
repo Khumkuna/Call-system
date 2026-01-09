@@ -50,7 +50,7 @@
                       <label  class="form-label">เพศ</label>
                       <select class="form-select" name="Gender" required>
                             <option  value="">-- เลือกเพศ --</option>
-                            <option value="ชาย">ชาย</option>
+                            <option value="DE">ชาย</option>
                             <option value="หญิง">หญิง</option>
                             <option value="ไม่ระบุ">ไม่ระบุ</option>
                             <option value="ชาย">ชาย</option>
