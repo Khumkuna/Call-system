@@ -16,7 +16,10 @@ if (isset($_POST['Login']) != "") {
 		$AccName = $Acc_Result['Acc_Fullname'];
     $AccRule = $Acc_Result['Acc_Rule'];
 
-        if($AccID =="")
+
+
+
+        if($AccName =="")
         {
               echo "
                 <script src='https://code.jquery.com/jquery-3.6.4.js'></script>
@@ -24,16 +27,17 @@ if (isset($_POST['Login']) != "") {
                 <script>
                       $(document).ready(function(){
                         Swal.fire({
-                          title:'ข้อมูลของท่านไม่ถูกต้อง กรุณาตรวจสอบและทำรายการใหม่',
+                          title:'Username หรือ Password ผิดพลาด โปรดตรวจสอบอีกครั้ง',
                           icon: 'error',
                           timer: 5000,
                           showConfirmButton: false
                         });
                       });
                       </script>";
-                header("refresh:2; url=index.php");
+                header("refresh:5; url=index.php");
         }
-        else{
+        else
+        {
                 
                 echo "
                 <script src='https://code.jquery.com/jquery-3.6.4.js'></script>

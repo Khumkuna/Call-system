@@ -3,6 +3,17 @@
 
  <?php  include('asset_Admin/Head.php');   ?>
 
+ <?php 
+ if(isset($_POST['Step_One'])) 
+   {
+     $_SESSION['Si_Selected'] = $_POST['Si_Selected'];
+     $_SESSION['Dev_Selected'] = $_POST['Dev_Selected'];
+   }
+  $SiSelected = $_SESSION['Si_Selected'];
+  $DevSelected = $_SESSION['Dev_Selected'];
+
+ ?>
+
  <body>
 
   <!-- ***** Preloader Start ***** -->
@@ -31,7 +42,7 @@
           <div class="row">
             <div class="col-lg-12 align-self-center">
               <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
-              <form action="Create-Case-II.php" method="POST">
+              <form action="Processing.php" method="POST">
                 <div class="row">
                  <div class="section-heading" align="center">
                     <h6>Create Case</h6>
@@ -40,12 +51,15 @@
                   </div>
                   <br>
                   <hr>
-                 
+                  <div class="col-12">
+                    
+                    <h3>การเปิดเคสงาน <?php echo $SiSelected.''.$DevSelected ?></h3>
+                  </div>
+
                    <div class="col-6">
                      <div class="mb-3">
                       <label  class="form-label">ศูนย์ดิจิทัลชุมชน</label>
-                          <select class="form-control" name="Si_Selected" required>
-                            <option value="" disabled selected>-- เลือกศูนย์ดิจิทัลชุมชน --</option>
+                          <select class="form-control" name="Si_ID" required>
                               <?php
                               // SQL query to fetch categories
                               $GetSite = "SELECT * FROM site_tb";
@@ -61,8 +75,7 @@
                   <div class="col-6">
                      <div class="mb-3">
                       <label  class="form-label">รายการอุปกรณ์</label>
-                          <select class="form-control" name="Dev_Selected" required>
-                            <option value="" disabled selected>-- เลือกอุปกรณ์ --</option>
+                          <select class="form-control" name="Si_ID" required>
                               <?php
                               // SQL query to fetch categories
                               $GetDevice = "SELECT * FROM device_tb";
@@ -75,63 +88,10 @@
                           </select>
                     </div>
                   </div>
-
-                  <div class="col-4">
-                     <div class="mb-3">
-                      <label  class="form-label">Serial Number</label>
-                      <input type="text" class="form-control" name="Case_SN"  required>
-                    </div>
-                  </div>
-
-                  <div class="col-4">
-                     <div class="mb-3">
-                      <label  class="form-label">ชื่อผู้แจ้ง</label>
-                      <input type="text" class="form-control" name="Case_SN"  required>
-                    </div>
-                  </div>
-
-                  <div class="col-4">
-                     <div class="mb-3">
-                      <label  class="form-label">เบอร์ติดต่อ</label>
-                      <input type="text" class="form-control" name="Case_SN"  required>
-                    </div>
-                  </div>
-
-
-                  <div class="col-12">
-                     <div class="mb-3">
-                      <label  class="form-label">สาเหตุ/อาการเสีย</label>
-                      <textarea class="form-control" name="Case_Detail" rows="3" required></textarea>
-                    </div>
-                  </div>
-
-                  <div class="col-6">
-                     <div class="mb-3">
-                      <label  class="form-label">ภาพประกอบ</label>
-                      <input type="file" class="form-control" name="Case_Image" accept="image/*" capture="environment" required>
-                    </div>
-                  </div>
-
-                  <div class="col-6">
-                     <div class="mb-3">
-                      <label  class="form-label">Video</label>
-                      <input type="file" class="form-control" name="Case_Video" accept="video/*" capture="camcorder">
-                    </div>
-                  </div>
-
-                  <div class="col-12">
-                     <div class="mb-3">
-                      <br>
-                        <button type="submit" class="form-control btn btn-info"  name="Step_One">Open Case</button>
-
-                    </div>
-                  </div>
-
-
-
                                   
                    <!-- <div class="col-12" align="right"><hr></div> -->
                    <div class="col-12" align="right">
+                       <button type="submit" class="btn btn-info "  name="Step_One"> Next --></button>
                   </div>
               </div>
               </form>

@@ -3,59 +3,6 @@ include('Connect.php');
 include 'Navbar/Head.html';
 
 
-	if(isset($_POST['lat']) && isset($_POST['lng'])){
-		$Get_Lat = $_POST['lat'];
-		$Get_Lng = $_POST['lng'];
-	
-	}
-	else
-	{ ?><form id="getGeo" action="index.php" method="POST">
-		<input hidden ="Yes" id="lat" name="lat">
-		<input hidden ="Yes" id="lng" name="lng">
-		</form>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-					<script >
-									if (navigator.geolocation) 
-									{
-										navigator.geolocation.getCurrentPosition(showPosition);
-									} 
-
-									function showPosition(position)
-									{
-										document.getElementById("lat").value = position.coords.latitude;
-										document.getElementById("lng").value = position.coords.longitude;
-										document.getElementById("getGeo").submit();
-									}
-					</script>	
-	<?php }
-
-  $SQLSite = "Select * from site_tb";
-      $querySite=mysqli_query($conn,$SQLSite);
-      while ($data_Site=mysqli_fetch_array($querySite)) 
-      {	
-
-        $SiLatitude = $data_Site['Site_Latitude'];
-        $SiLongitude = $data_Site['Site_Longitude'];
-
-        $Get_LatMin = $SiLatitude-0.001;
-        $Get_LatMax = $SiLatitude+0.001;
-        $Get_LngMin = $SiLongitude-0.001;
-        $Get_LngMax = $SiLongitude+0.001;
-
-        $AddLatLong = $Get_LatMin."-".$Get_LatMax."-".$Get_LngMin."-".$Get_LngMax;
-
-        $latLong= explode("-", $AddLatLong);
-        $latMin = floatval($latLong[0]);
-        $latMax = floatval($latLong[1]);
-        $longMin = floatval($latLong[2]);
-        $longMax = floatval($latLong[3]);
-
-        if($Get_Lat<=$latMax && $Get_Lat>=$latMin && $Get_Lng<=$longMax && $Get_Lng>=$longMin)
-        {
-          $N++;
-          $Site_ID = $data_Site['Site_ID'];
-        }
-      }
 
 ?>
 
@@ -198,7 +145,7 @@ https://templatemo.com/tm-568-digimedia
                       <button type="submit" name="Login" class="form-control btn btn-dark" >Login</button>
                     </div>
                     <br>
-                    </form>
+                </form>
               </div>
       </div>
      
