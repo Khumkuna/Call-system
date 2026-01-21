@@ -31,7 +31,7 @@
           <div class="row">
             <div class="col-lg-12 align-self-center">
               <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
-              <form action="Create-Case-II.php" method="POST">
+              <form action="Processing.php" method="POST">
                 <div class="row">
                  <div class="section-heading" align="center">
                     <h6>Create Case</h6>
@@ -86,14 +86,14 @@
                   <div class="col-4">
                      <div class="mb-3">
                       <label  class="form-label">ชื่อผู้แจ้ง</label>
-                      <input type="text" class="form-control" name="Case_SN"  required>
+                      <input type="text" class="form-control" name="Case_User"  required>
                     </div>
                   </div>
 
                   <div class="col-4">
                      <div class="mb-3">
                       <label  class="form-label">เบอร์ติดต่อ</label>
-                      <input type="text" class="form-control" name="Case_SN"  required>
+                      <input type="text" class="form-control" name="Case_Tel"  required>
                     </div>
                   </div>
 
@@ -108,7 +108,7 @@
                   <div class="col-6">
                      <div class="mb-3">
                       <label  class="form-label">ภาพประกอบ</label>
-                      <input type="file" class="form-control" name="Case_Image" accept="image/*" capture="environment" required>
+                      <input type="file" class="form-control" name="Case_Image" accept="image/*" capture="environment" >
                     </div>
                   </div>
 
@@ -122,12 +122,10 @@
                   <div class="col-12">
                      <div class="mb-3">
                       <br>
-                        <button type="submit" class="form-control btn btn-info"  name="Step_One">Open Case</button>
+                        <button type="submit" class="form-control btn btn-info"  name="Open_Case">Open Case</button>
 
                     </div>
                   </div>
-
-
 
                                   
                    <!-- <div class="col-12" align="right"><hr></div> -->
