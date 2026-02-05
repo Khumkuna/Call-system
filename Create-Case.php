@@ -31,7 +31,7 @@
           <div class="row">
             <div class="col-lg-12 align-self-center">
               <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
-              <form action="Processing.php" method="POST">
+              <form action="Processing.php" method="POST" enctype="multipart/form-data">
                 <div class="row">
                  <div class="section-heading" align="center">
                     <h6>Create Case</h6>
@@ -79,7 +79,7 @@
                   <div class="col-4">
                      <div class="mb-3">
                       <label  class="form-label">Serial Number</label>
-                      <input type="text" class="form-control" name="Case_SN"  required>
+                      <input type="text" class="form-control" name="Case_SN" style="text-transform: uppercase;" onkeyup="this.value = this.value.toUpperCase()" required>
                     </div>
                   </div>
 

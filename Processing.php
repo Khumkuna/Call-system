@@ -1,6 +1,6 @@
 <?php
 include('Connect.php');
-include('asset_Admin/Head.php');
+// include('asset_Admin/Head.php');
 
 if (isset($_POST['Login']) != "") {
 	$Username = $_POST['Username'];
@@ -11,14 +11,14 @@ if (isset($_POST['Login']) != "") {
 		$hashPassword = sha1($Password . $salt);
 
    
-    $result_Acc=mysqli_query($conn, "SELECT * FROM Account_tb WHERE Acc_Username='$Username' AND Acc_Password='$hashPassword'")or die('Error In Session');
+    $result_Acc=mysqli_query($conn, "SELECT * FROM Account_call_tb WHERE Acc_Username='$Username' AND Acc_Password='$hashPassword'")or die('Error In Session');
 		$Acc_Result=mysqli_fetch_array($result_Acc);
 		$AccID = $Acc_Result['Acc_ID'];
 		$AccName = $Acc_Result['Acc_Fullname'];
     $AccRule = $Acc_Result['Acc_Rule'];
 
 
-
+//  title:'Username หรือ Password ผิดพลาด โปรดตรวจสอบอีกครั้ง',
 
         if($AccName =="")
         {
@@ -35,7 +35,7 @@ if (isset($_POST['Login']) != "") {
                         });
                       });
                       </script>";
-                header("refresh:2; url=index.php");
+                header("refresh:5; url=index.php");
         }
         else
         {
@@ -71,8 +71,6 @@ if (isset($_POST['Login']) != "") {
 
 if (isset($_POST['Open_Case']) != "") 
 {
-
-
   $Si_Selected = $_POST['Si_Selected'];
   $Dev_Selected = $_POST['Dev_Selected'];
   $Case_SN = $_POST['Case_SN'];
@@ -95,12 +93,24 @@ if (isset($_POST['Open_Case']) != "")
   $ref = "Rep-";
   $Rep_ID = $ref.''.$ars;
 
+  $ImagePatchs = 'Uploads/CaseImages';
+  $imageFileType = strtolower(pathinfo(basename($_FILES["Case_Image"]["name"]),PATHINFO_EXTENSION));
+  $NewnameImage = $GenID. '.' . $imageFileType;
+  $ImagePatchs = $ImagePatchs . '/' . $NewnameImage;
 
+  $VideoFileType = strtolower(pathinfo(basename($_FILES["Case_Video"]["name"]),PATHINFO_EXTENSION));
+  $NewnameVideo = $GenID. '.' . $VideoFileType;
+  $VideoPatchs = 'Uploads/CaseVideos/'.$NewnameVideo;
+  
     $SQL_OpenCase ="INSERT INTO `repair_tb` (`Rep_ID`,`Rep_Ticket`,`Rep_Device`,`Rep_Serial`,`Rep_User`, `Rep_Tel`, `Rep_Detail`, `Rep_Image`, `Rep_Video`, `Si_ID`, `Rep_DateCreate`, `Rep_Status`,`Rep_CreateBy`,`Rep_LastAction`) 
       VALUES 
-      ('$Rep_ID','$GenID', '$Dev_Selected','$Case_SN','$Case_User','$Case_Tel','$Case_Detail','$Case_Image','$Case_Video','$Si_Selected','$DateCreate','Open','$Login_Name','Call-Center')";
+      ('$Rep_ID','$GenID', '$Dev_Selected','$Case_SN','$Case_User','$Case_Tel','$Case_Detail','$ImagePatchs','$VideoPatchs','$Si_Selected','$DateCreate','Open','$Login_Name','Call-Center')";
       if ($conn->query($SQL_OpenCase)==TRUE)
         {
+            move_uploaded_file($_FILES["Case_Image"]["tmp_name"], $ImagePatchs);
+            move_uploaded_file($_FILES["Case_Video"]["tmp_name"], $VideoPatchs);
+
+
               echo "
                     <script src='https://code.jquery.com/jquery-3.6.4.js'></script>
                     <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
@@ -116,10 +126,7 @@ if (isset($_POST['Open_Case']) != "")
                           </script>";
                         
                     header("refresh:2; url=Create-Case.php");
-
         }
-
-  
 }
 
 // ***********************************
@@ -146,7 +153,7 @@ if (isset($_POST['Open_Case']) != "")
 //   $DateCreate = $CutMonth.'/'.$CutYear;
 
 
-//   $result_CheckUsername=mysqli_query($conn, "SELECT * FROM account_tb WHERE Acc_Username='$Username'");
+//   $result_CheckUsername=mysqli_query($conn, "SELECT * FROM account_call_tb WHERE Acc_Username='$Username'");
 //   $CheckUsername_Result=mysqli_fetch_array($result_CheckUsername);
 //   $CheckUser = $CheckUsername_Result['Acc_Username'];
 
@@ -173,7 +180,7 @@ if (isset($_POST['Open_Case']) != "")
 //       if($Password == $CFPassword)
 //       {
       
-//         $Check_ID = "Select * From Account_tb ORDER BY Acc_ID DESC LIMIT 1";
+//         $Check_ID = "Select * From Account_call_tb ORDER BY Acc_ID DESC LIMIT 1";
 //         $result_Check_ID =mysqli_query($conn,$Check_ID);
 //         $row_Check_ID =mysqli_fetch_array($result_Check_ID);
 //         $Last_id = $row_Check_ID['Acc_ID'];
@@ -188,7 +195,7 @@ if (isset($_POST['Open_Case']) != "")
 //         $salt = "f#@V)Hu^%Hgfdsa";
 //         $hashPassword = sha1($CFPassword . $salt);
 
-//           $SQL_Add_Account ="INSERT INTO `Account_tb` (`Acc_ID`,`Acc_Fullname`,`Acc_Username`,`Acc_Password`, `Acc-Telephone`, `Acc-Email`, `Acc_Line`, `Acc-Start`, `Acc_Activate`, `Acc_Rule`, `Acc_Site`, `Acc_Gender`,`Acc_Update`) 
+//           $SQL_Add_Account ="INSERT INTO `Account_call_tb` (`Acc_ID`,`Acc_Fullname`,`Acc_Username`,`Acc_Password`, `Acc-Telephone`, `Acc-Email`, `Acc_Line`, `Acc-Start`, `Acc_Activate`, `Acc_Rule`, `Acc_Site`, `Acc_Gender`,`Acc_Update`) 
 //           VALUES 
 //           ('$AccID', '$Fullname','$Username','$hashPassword','$Telephone','$Email','$Line','$Date_Start','Actived','$rule','$Site','$Gender','$Date_Update')";
 //           if ($conn->query($SQL_Add_Account)==TRUE)
@@ -270,7 +277,7 @@ if (isset($_POST['Open_Case']) != "")
 //   $DateCreate = $CutMonth.'/'.$CutYear;
 
 
-//   $result_CheckUsername=mysqli_query($conn, "SELECT * FROM account_tb WHERE Acc_Username='$Username'");
+//   $result_CheckUsername=mysqli_query($conn, "SELECT * FROM account_call_tb WHERE Acc_Username='$Username'");
 //   $CheckUsername_Result=mysqli_fetch_array($result_CheckUsername);
 //   $CheckUser = $CheckUsername_Result['Acc_Username'];
 
@@ -297,7 +304,7 @@ if (isset($_POST['Open_Case']) != "")
 //       if($Password == $CFPassword)
 //       {
       
-//         $Check_ID = "Select * From Account_tb ORDER BY Acc_ID DESC LIMIT 1";
+//         $Check_ID = "Select * From Account_call_tb ORDER BY Acc_ID DESC LIMIT 1";
 //         $result_Check_ID =mysqli_query($conn,$Check_ID);
 //         $row_Check_ID =mysqli_fetch_array($result_Check_ID);
 //         $Last_id = $row_Check_ID['Acc_ID'];
@@ -312,7 +319,7 @@ if (isset($_POST['Open_Case']) != "")
 //         $salt = "f#@V)Hu^%Hgfdsa";
 //         $hashPassword = sha1($CFPassword . $salt);
 
-//           $SQL_Add_Account ="INSERT INTO `Account_tb` (`Acc_ID`,`Acc_Fullname`,`Acc_Username`,`Acc_Password`, `Acc-Telephone`, `Acc-Email`, `Acc_Line`, `Acc-Start`, `Acc_Activate`, `Acc_Rule`, `Acc_Site`, `Acc_Gender`, `Acc_RuleAccount`, `ACC_RuleSite`, `Acc_RuleService`, `Acc_RuleCallcenter`,`Acc_RuleProfile`, `Acc_Update`) 
+//           $SQL_Add_Account ="INSERT INTO `Account_call_tb` (`Acc_ID`,`Acc_Fullname`,`Acc_Username`,`Acc_Password`, `Acc-Telephone`, `Acc-Email`, `Acc_Line`, `Acc-Start`, `Acc_Activate`, `Acc_Rule`, `Acc_Site`, `Acc_Gender`, `Acc_RuleAccount`, `ACC_RuleSite`, `Acc_RuleService`, `Acc_RuleCallcenter`,`Acc_RuleProfile`, `Acc_Update`) 
 //           VALUES 
 //           ('$AccID', '$Fullname','$Username','$hashPassword','$Telephone','$Email','$Line','$Date_Start','Actived','$rule','$Site','$Gender','$Account_Rule','$Site_Rule','$Person_Rule','$Call_Rule','$Call_Profile', '$Date_Update')";
 //           if ($conn->query($SQL_Add_Account)==TRUE)
@@ -490,7 +497,7 @@ if (isset($_POST['Open_Case']) != "")
 // 		$salt = "f#@V)Hu^%Hgfdsa";
 // 		$hashPassword_Old = sha1($Old_Pass . $salt);
 
-//       $CheckOldpassword = mysqli_query($conn, "SELECT * FROM Account_tb WHERE Acc_ID='$Acc_ID' AND Acc_Password='$hashPassword_Old'");
+//       $CheckOldpassword = mysqli_query($conn, "SELECT * FROM Account_call_tb WHERE Acc_ID='$Acc_ID' AND Acc_Password='$hashPassword_Old'");
 //       if(mysqli_num_rows($CheckOldpassword) > 0)
 //         {
 //           $Acc_Status = $_POST['Acc_Status'];
@@ -523,7 +530,7 @@ if (isset($_POST['Open_Case']) != "")
 //                 $salt = "f#@V)Hu^%Hgfdsa";
 //                 $hashPassword = sha1($CF_Pass . $salt);
 
-//                 $SQL_Edit_Profile = "UPDATE `Account_tb` SET `Acc_Fullname`='$Acc_Fullname',`Acc_Password`='$hashPassword',`Acc_Activate`='$Acc_Status',`Acc_RuleAccount`='$Account_Rule',`ACC_RuleSite`='$Site_Rule',`Acc_RuleService`='$Person_Rule',`Acc_RuleCallcenter`='$Call_Rule',`Acc_RuleProfile`='$Profile_Rule' WHERE Acc_ID='$Acc_ID'";
+//                 $SQL_Edit_Profile = "UPDATE `Account_call_tb` SET `Acc_Fullname`='$Acc_Fullname',`Acc_Password`='$hashPassword',`Acc_Activate`='$Acc_Status',`Acc_RuleAccount`='$Account_Rule',`ACC_RuleSite`='$Site_Rule',`Acc_RuleService`='$Person_Rule',`Acc_RuleCallcenter`='$Call_Rule',`Acc_RuleProfile`='$Profile_Rule' WHERE Acc_ID='$Acc_ID'";
 //                 if ($conn->query($SQL_Edit_Profile)==TRUE)
 //                   {
 //                         echo "
@@ -601,7 +608,7 @@ if (isset($_POST['Open_Case']) != "")
 // 		$hashPassword = sha1($New_Pass . $salt);
 
 
-//         $SQL_Edit_Profile = "UPDATE `Account_tb` SET `Acc_Fullname`='$Acc_Fullname',`Acc_Password`='$hashPassword',`Acc_Activate`='$Acc_Status',`Acc_RuleAccount`='$Account_Rule',`ACC_RuleSite`='$Site_Rule',`Acc_RuleService`='$Person_Rule',`Acc_RuleCallcenter`='$Call_Rule',`Acc_RuleProfile`='$Profile_Rule',`Acc_Update`='$Date_Update' WHERE Acc_ID='$AccID'";
+//         $SQL_Edit_Profile = "UPDATE `Account_call_tb` SET `Acc_Fullname`='$Acc_Fullname',`Acc_Password`='$hashPassword',`Acc_Activate`='$Acc_Status',`Acc_RuleAccount`='$Account_Rule',`ACC_RuleSite`='$Site_Rule',`Acc_RuleService`='$Person_Rule',`Acc_RuleCallcenter`='$Call_Rule',`Acc_RuleProfile`='$Profile_Rule',`Acc_Update`='$Date_Update' WHERE Acc_ID='$AccID'";
 //         if ($conn->query($SQL_Edit_Profile)==TRUE)
 //           {
 //                 echo "
@@ -754,7 +761,7 @@ if (isset($_POST['Open_Case']) != "")
 //   $extensions_arr = array("jpg", "jpeg", "png", "gif");
 //   if (in_array($imageFileType, $extensions_arr)) {
 //     if (move_uploaded_file($_FILES['profile_img']['tmp_name'], $target_file)) {
-//       $SQL_Update_Profile = "UPDATE `Account_tb` SET `Acc_ImgProfile`='$target_file' WHERE Acc_ID='$ACCID'";
+//       $SQL_Update_Profile = "UPDATE `Account_call_tb` SET `Acc_ImgProfile`='$target_file' WHERE Acc_ID='$ACCID'";
 //       if ($conn->query($SQL_Update_Profile) == TRUE) {
 //         echo "
 //           <script src='https://code.jquery.com/jquery-3.6.4.js'></script>
@@ -805,7 +812,7 @@ if (isset($_POST['Open_Case']) != "")
 //   $CF_Pass = $_POST['CF_Pass'];
 //   $Date_Update = date("Y-m-d H:i");
 
-//   $CheckPass = mysqli_query($conn, "SELECT * FROM Account_tb WHERE Acc_ID='$AccID'");
+//   $CheckPass = mysqli_query($conn, "SELECT * FROM Account_call_tb WHERE Acc_ID='$AccID'");
 //   $CheckPass_Result=mysqli_fetch_array($CheckPass);
 //   $Current_Pass = $CheckPass_Result['Acc_Password'];
 
@@ -840,7 +847,7 @@ if (isset($_POST['Open_Case']) != "")
 //             $salt = "f#@V)Hu^%Hgfdsa";
 //             $hashPassword = sha1($CF_Pass . $salt);
 
-//             $SQL_Edit_Profile = "UPDATE `Account_tb` SET `Acc_Fullname`='$Acc_Fullname',`Acc-Telephone`='$Acc_Telephone',`Acc_Password`='$hashPassword',`Acc_Update`='$Date_Update' WHERE Acc_ID='$AccID'";
+//             $SQL_Edit_Profile = "UPDATE `Account_call_tb` SET `Acc_Fullname`='$Acc_Fullname',`Acc-Telephone`='$Acc_Telephone',`Acc_Password`='$hashPassword',`Acc_Update`='$Date_Update' WHERE Acc_ID='$AccID'";
 //             if ($conn->query($SQL_Edit_Profile)==TRUE)
 //               {
 //                     echo "

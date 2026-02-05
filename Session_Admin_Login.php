@@ -3,7 +3,7 @@ if($_SESSION['Acc_ID']!="" && $_SESSION['Acc_Rule']=="Admin")
 {
 $Acc_ID = $_SESSION['Acc_ID'];
   
-$result_Acc=mysqli_query($conn, "SELECT * FROM Account_tb WHERE Acc_ID='$Acc_ID'")or die('Error In Session');
+$result_Acc=mysqli_query($conn, "SELECT * FROM account_call_tb WHERE Acc_ID='$Acc_ID'")or die('Error In Session');
 $Acc_Result=mysqli_fetch_array($result_Acc);
 $Login_Name = $Acc_Result['Acc_Fullname'];
 $Login_User = $Acc_Result['Acc_Username'];
