@@ -15,6 +15,7 @@
       }
       footer {
         flex-shrink: 0;
+        margin-
       }
     </style>
   
