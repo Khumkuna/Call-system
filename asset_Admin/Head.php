@@ -1,6 +1,6 @@
  <?php 
  include('Connect.php');
- include('Session_Admin_Login.php'); 
+ include('Session_Login.php'); 
  ?>
  
  <head>

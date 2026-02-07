@@ -22,12 +22,14 @@ $Si_ID = $RowGetCase['Si_ID'];
 $SelectUser = $RowGetCase['Rep_User'];
 $Rep_Tel = $RowGetCase['Rep_Tel'];
 $SelectName = $SelectUser . " - " . $Rep_Tel;
-$SelectDetail = $RowGetCase['Rep_Detail'];
+$SelectProblem = $RowGetCase['Rep_Problem'];
 $SelectDatecreate = date("d-m-Y H:i", strtotime($RowGetCase['Rep_DateCreate']));
 $SelectDevice = $RowGetCase['Rep_Device'];
 $SelectSerial = $RowGetCase['Rep_Serial'];
 $SelectImage = $RowGetCase['Rep_Image'];
 $SelectVideo = $RowGetCase['Rep_Video'];
+$SelectCreateBy= $RowGetCase['Rep_CreateBy'];
+$SelectID = $RowGetCase['Rep_ID'];
 
 $GetServiceCenter = "SELECT * FROM site_tb WHERE Si_ID = '$Si_ID'";
 $ResultServiceCenter = mysqli_query($conn, $GetServiceCenter);
@@ -36,13 +38,6 @@ $SelectedSiName = $RowServiceCenter['Si_Name'];
 $SelectSubDistrict = $RowServiceCenter['Si_Subdistrict'];
 $SelectDistrict = $RowServiceCenter['Si_District'];
 $SelectProvince = $RowServiceCenter['Si_Province'];
-
-
-
-
-
-
-
 
 
 
@@ -166,8 +161,13 @@ $SelectProvince = $RowServiceCenter['Si_Province'];
                         </div>
                   </div>
 
+
+
+
+                  
                     <div class="col-8">
                       <div class="form-group">
+                         <form acction="Processing.php" method="POST">
                         <div class="row">
                         <div class="col-6" align="left">
                           <label for="Case_Detail"><b> Detail Case : </b><?php echo $SelectedCase; ?></label><br>
@@ -194,7 +194,7 @@ $SelectProvince = $RowServiceCenter['Si_Province'];
                         </div>
                         <div class="col-3" align="left">
                           <label for="Case_Detail"> <br> </label><br>
-                            <label for="Case_Detail"><b>ผู้รับแจ้ง : </b><?php echo $SelectName_; ?></label>
+                            <label for="Case_Detail"><b>ผู้รับแจ้ง : </b><?php echo $SelectCreateBy; ?></label>
                         </div>
                          <div class="col-6" align="left">
                             <label for="Case_Detail"> <br> </label><br>
@@ -215,18 +215,18 @@ $SelectProvince = $RowServiceCenter['Si_Province'];
                         </div>
                         <div class="col-6" align="left">
                           <label for="Case_Detail"> <br> </label><br>
-                          <label for="Case_Detail"><b>อาการเสีย/ปัญหา : </b><?php echo $SelectDetail; ?></label>
+                          <label for="Case_Detail"><b>อาการเสีย/ปัญหา : </b><?php echo $SelectProblem; ?></label>
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col-6" align="left">
                           <label for="Case_Detail"> </label>
-                          <textarea class="form-control" id="Case_Detail" name="Case_Detail" rows="4" placeholder="หมายเหตุการแก้ไข"></textarea>
+                          <textarea class="form-control" id="Case_Detail" required name="Case_Edit" rows="4" placeholder="หมายเหตุการแก้ไข"></textarea>
                         </div>
                         <div class="col-6" align="left">
                           <label for="Case_Detail"> </label>
-                           <textarea class="form-control" id="Case_Detail" name="Case_Detail" rows="4" placeholder="หมายเหตุการส่ง Case ต่อ"></textarea>
+                           <textarea class="form-control" id="Case_Detail" name="Case_Remark" rows="4" placeholder="หมายเหตุการส่ง Case ต่อ"></textarea>
                         </div>
                       </div>
 
@@ -252,20 +252,15 @@ $SelectProvince = $RowServiceCenter['Si_Province'];
                           </select>       
                         </div>
                       </div>
-
-
                        <div class="row">
                         <div class="col-12" align="left">
                           <label for="Case_Detail"> </label>
-                              <button  class="form-control btn btn-success"  name="Step_One"> บันทึกข้อมูล </button>                      
+                            <input type="hidden" class="form-control" id="SelectID" name="SelectID" value="<?php echo $SelectID; ?>" >
+                            <button  class="form-control btn btn-success"  name="Update_Case"> บันทึกข้อมูล </button>                      
                           </div>
                       </div>
-
-
-                       
-
-                   <!-- <div class="col-12" align="right"><hr></div> -->
-                    
+                  
+                    </form>
                   </div>
                 </div>
               </div>
@@ -276,7 +271,6 @@ $SelectProvince = $RowServiceCenter['Si_Province'];
     </div>
   </div>
 </div>
-
 
 
 
@@ -303,6 +297,43 @@ $SelectProvince = $RowServiceCenter['Si_Province'];
         </div>
       </div>
     </div>
+
+
+
+    <!-- Video Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" role="
+dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="videoModalLabel">Video ประกอบ</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body
+">
+            <?php if(!empty($SelectVideo)): ?>
+              <video class="img-fluid" controls>
+                <source src="<?php echo $SelectVideo; ?>" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            <?php else: ?>
+              <p>ไม่มีวิดีโอ</p>
+            <?php endif; ?>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
 
     <?php include('asset_Admin/Footer.php'); ?>
   <!-- Scripts -->

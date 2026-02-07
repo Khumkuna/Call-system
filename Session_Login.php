@@ -15,6 +15,8 @@ $Login_Rule = $Acc_Result['Acc_Rule'];
   $Acc_RuleService = $Acc_Result['Acc_RuleService'];
   $Acc_RuleCallcenter = $Acc_Result['Acc_RuleCallcenter'];
   $Acc_RuleProfile = $Acc_Result['Acc_RuleProfile'];
+
+  $_SESSION['Login_Name'] = $Login_Name;
 }
 else
 {

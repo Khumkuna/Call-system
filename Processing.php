@@ -1,6 +1,6 @@
 <?php
 include('Connect.php');
-// include('asset_Admin/Head.php');
+$LoginName = $_SESSION['Login_Name'];
 
 if (isset($_POST['Login']) != "") {
 	$Username = $_POST['Username'];
@@ -16,6 +16,7 @@ if (isset($_POST['Login']) != "") {
 		$AccID = $Acc_Result['Acc_ID'];
 		$AccName = $Acc_Result['Acc_Fullname'];
     $AccRule = $Acc_Result['Acc_Rule'];
+
 
 
 //  title:'Username หรือ Password ผิดพลาด โปรดตรวจสอบอีกครั้ง',
@@ -93,18 +94,27 @@ if (isset($_POST['Open_Case']) != "")
   $ref = "Rep-";
   $Rep_ID = $ref.''.$ars;
 
-  $ImagePatchs = 'Uploads/CaseImages';
-  $imageFileType = strtolower(pathinfo(basename($_FILES["Case_Image"]["name"]),PATHINFO_EXTENSION));
-  $NewnameImage = $GenID. '.' . $imageFileType;
-  $ImagePatchs = $ImagePatchs . '/' . $NewnameImage;
+  if($Case_Image != "")
+    {
+      $ImagePatchs = 'Uploads/CaseImages';
+      $imageFileType = strtolower(pathinfo(basename($_FILES["Case_Image"]["name"]),PATHINFO_EXTENSION));
+      $NewnameImage = $GenID. '.' . $imageFileType;
+      $ImagePatchs = $ImagePatchs . '/' . $NewnameImage;
+    }
+    
 
-  $VideoFileType = strtolower(pathinfo(basename($_FILES["Case_Video"]["name"]),PATHINFO_EXTENSION));
-  $NewnameVideo = $GenID. '.' . $VideoFileType;
-  $VideoPatchs = 'Uploads/CaseVideos/'.$NewnameVideo;
+    if($Case_Video != "")
+    {
+      $VideoPatchs = 'Uploads/CaseVideos';
+      $VideoFileType = strtolower(pathinfo(basename($_FILES["Case_Video"]["name"]),PATHINFO_EXTENSION));
+      $NewnameVideo = $GenID. '.' . $VideoFileType;
+      $VideoPatchs = $VideoPatchs . '/' . $NewnameVideo;
+    }
+
   
-    $SQL_OpenCase ="INSERT INTO `repair_tb` (`Rep_ID`,`Rep_Ticket`,`Rep_Device`,`Rep_Serial`,`Rep_User`, `Rep_Tel`, `Rep_Detail`, `Rep_Image`, `Rep_Video`, `Si_ID`, `Rep_DateCreate`, `Rep_Status`,`Rep_CreateBy`,`Rep_LastAction`) 
+    $SQL_OpenCase ="INSERT INTO `repair_tb` (`Rep_ID`,`Rep_Ticket`,`Rep_Device`,`Rep_Serial`,`Rep_User`, `Rep_Tel`, `Rep_Problem`, `Rep_Image`, `Rep_Video`, `Si_ID`, `Rep_DateCreate`, `Rep_Status`,`Rep_CreateBy`,`Rep_LastAction`) 
       VALUES 
-      ('$Rep_ID','$GenID', '$Dev_Selected','$Case_SN','$Case_User','$Case_Tel','$Case_Detail','$ImagePatchs','$VideoPatchs','$Si_Selected','$DateCreate','Open','$Login_Name','Call-Center')";
+      ('$Rep_ID','$GenID', '$Dev_Selected','$Case_SN','$Case_User','$Case_Tel','$Case_Detail','$ImagePatchs','$VideoPatchs','$Si_Selected','$DateCreate','Open','$LoginName','Call-Center')";
       if ($conn->query($SQL_OpenCase)==TRUE)
         {
             move_uploaded_file($_FILES["Case_Image"]["tmp_name"], $ImagePatchs);
@@ -131,7 +141,35 @@ if (isset($_POST['Open_Case']) != "")
 
 // ***********************************
 
+if(isset($_POST["Update_Case"]) != "")
+{
 
+  $SelectID = $_POST['SelectID'];
+  $CaseEdit = $_POST['Case_Edit'];
+  $CaseRemark = $_POST['Case_Remark'];
+  $DateUpdate = date("Y-m-d H:i");
+
+      $SQL_Update_Case = "UPDATE `repair_tb` SET `Rep_Edit`='$CaseEdit',Rep_Remark`='$CaseRemark',`Rep_LastAction`='Helpdesk',`Rep_DateVerify`='$DateUpdate' WHERE Rep_ID='$SelectID'";
+      if ($conn->query($SQL_Update_Case)==TRUE)
+        {
+              echo "
+                    <script src='https://code.jquery.com/jquery-3.6.4.js'></script>
+                    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+                    <script>
+                          $(document).ready(function(){
+                            Swal.fire({
+                              title:'บันทึกข้อมูลเรียบร้อยแล้ว',
+                              icon: 'success',
+                              timer: 5000,
+                              showConfirmButton: false
+                            });
+                          });
+                          </script>";
+                        
+                    header("refresh:2; url=Home.php");
+
+        }
+}
 // if(isset($_POST["Create_Account"]))
 // {
 
